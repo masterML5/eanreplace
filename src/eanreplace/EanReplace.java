@@ -249,6 +249,7 @@ double[][] a = {
 //   System.out.println(Query);
 //   Statement Add = Con.createStatement();
 //   Add.executeUpdate(Query);
+// a
     }else{
     System.out.println("ima vise artikala pod istom sifrom!");
     }
