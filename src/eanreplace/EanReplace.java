@@ -5,7 +5,6 @@
  */
 package eanreplace;
 
-import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,8 +13,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -26,6 +23,7 @@ Connection Con = null;
 Statement St = null;
 ResultSet Rs = null;
 private static String sifraG;
+private static Integer brojArtikala;
 
     public static void main(String[] args) throws SQLException {
 
@@ -233,16 +231,28 @@ double[][] a = {
 //    
     Connection Con = DriverManager.getConnection("jdbc:postgresql://10.11.124.202:5432/asoft?user=vlada&password=vladakk");
 
-    String sqlArtikli = "select sifra from pionir_2022_robnomaterijalno.artikli where aktivan=true and vazeci=true and sifra2 = ?";
+    String sqlArtikli = "select sifra, count sifra as SifCount from pionir_2022_robnomaterijalno.artikli where aktivan=true and vazeci=true and sifra2 = ?";
     PreparedStatement pstmt = Con.prepareStatement(sqlArtikli); 
     pstmt.setString(1,sifra2String);
     java.sql.ResultSet rs = pstmt.executeQuery();
     if(rs.next()){
     sifraG = rs.getString(1);
+    brojArtikala = rs.getInt("SifCount");
     }
+    
+    if(brojArtikala == 1){
     System.out.println(sifraG);
     System.out.println(rs);
     System.out.println(rs.getClass());
+//   Connection Con = DriverManager.getConnection("jdbc:postgresql://10.11.124.202:5432/asoft?user=vlada&password=vladakk");
+//   String Query = "Update pionir_2022_robnomaterijalno.artikli_pakovanja set sirina='"+sirinaString+"'"+",duzina='"+duzinaString+"'"+",visina='"+visinaString+"'"+",brutojm="+bruto+""+" where ean='"+eanString+"' AND aktivan=true AND vazeci=true AND sifra='"+sifraG+"'";
+//   System.out.println(Query);
+//   Statement Add = Con.createStatement();
+//   Add.executeUpdate(Query);
+    }else{
+    System.out.println("ima vise artikala pod istom sifrom!");
+    }
+  
     
  
     // +++++++++++ UPDATE ++++++++++++++++
